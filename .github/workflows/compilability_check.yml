@@ -13,10 +13,16 @@ jobs:
       - name: Setup the environment
         run: |
           sudo pip3 install meson==1.4.0
-          sudo apt-get install nasm ninja-build
+          sudo apt-get install nasm ninja-build gtk-doc-tools
 
       - name: Executing the script
         run: |
           export ANDROID_SDK_HOME=$ANDROID_HOME
           export ANDROID_NDK_HOME=$ANDROID_NDK_LATEST_HOME
-          ./ffmpeg-android-maker.sh -all-free -all-gpl -android=21 -abis=${{ matrix.abi }}
+          ./ffmpeg-android-maker.sh -all-free -all-gpl -android=30 -abis=${{ matrix.abi }}
+
+      - name: upload ffmpeg
+        uses: actions/upload-artifact@v4
+        with:
+          name: ffmpeg
+          path: build/ffmpeg/${{ matrix.abi }}/bin/*
